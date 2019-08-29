@@ -2,7 +2,7 @@
 
 import "../node_modules/font-awesome/css/font-awesome.css";
 import "../node_modules/angular-material/angular-material.css";
-import "../node_modules/imageviewer/imageviewer.css";
+import "../node_modules/imageviewer/dist/iv-viewer.css";
 import "../node_modules/highlight.js/styles/atom-one-dark.css";
 
 import AngularApollo from "angular1-apollo";
@@ -23,7 +23,7 @@ require("moment");
 require("lodash");
 require("pdfjs-dist");
 require("jquery");
-require("../node_modules/imageviewer/imageviewer.js");
+require("../node_modules/imageviewer/dist/iv-viewer.js");
 require("highlight.js");
 
 import pdflib from "pdfjs-dist";
