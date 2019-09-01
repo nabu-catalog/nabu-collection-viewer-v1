@@ -41,8 +41,6 @@ function Controller($state, $rootScope, dataService, $timeout, $location) {
     }
 
     function loadItem() {
-        console.log("here");
-        console.log($location.path());
         const collectionId = $state.params.collectionId;
         const itemId = $state.params.itemId;
         vm.showMedia = false;
@@ -55,40 +53,40 @@ function Controller($state, $rootScope, dataService, $timeout, $location) {
                 return;
             }
             vm.item = resp;
-            if (isEmpty(vm.item.media)) {
+            if (isEmpty(vm.item.video)) {
                 return $state.go("main");
             }
 
-            vm.media = vm.item.media.map(m => m.name);
-            vm.totalItems = vm.item.media.length;
+            vm.video = vm.item.video.map(m => m.name);
+            vm.totalItems = vm.item.video.length;
 
-            if (!$state.params.mediaId) {
+            if (!$state.params.videoId) {
                 $location.search({});
-                $state.go("main.media.instance", { mediaId: vm.media[0] });
+                $state.go("main.video.instance", { videoId: vm.video[0] });
             }
             $timeout(() => {
-                const mediaId = $state.params.mediaId;
-                vm.config.current = vm.media.indexOf(mediaId);
-                vm.config.item = vm.item.media[vm.config.current];
+                const videoId = $state.params.videoId;
+                vm.config.current = vm.video.indexOf(videoId);
+                vm.config.item = vm.item.video[vm.config.current];
             });
         }
     }
 
     function jump() {
-        each(vm.media, (item, idx) => {
+        each(vm.video, (item, idx) => {
             if (vm.config.current === idx) {
                 $location.search({});
                 vm.config.item = null;
                 $timeout(() => {
-                    vm.config.item = vm.item.media[vm.config.current];
-                    $state.go("main.media.instance", { mediaId: item });
+                    vm.config.item = vm.item.video[vm.config.current];
+                    $state.go("main.video.instance", { videoId: item });
                 });
             }
         });
     }
 
     function nextItem() {
-        if (vm.config.current === vm.item.media.length - 1) {
+        if (vm.config.current === vm.item.video.length - 1) {
             return;
         }
         vm.config.current += 1;

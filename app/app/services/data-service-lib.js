@@ -10,7 +10,8 @@ const {
     flattenDeep,
     groupBy,
     sortBy,
-    orderBy
+    orderBy,
+    uniqBy
 } = require("lodash");
 const lodash = require("lodash");
 
@@ -83,6 +84,7 @@ function createItemDataStructureFromGraphQL(data) {
     const transcriptionFiles = compact(
         filterFiles(types.transcriptionTypes, files)
     );
+    const media = getMediaData([...mediaFiles, ...transcriptionFiles]);
 
     let struct = {
         audioVisualisations: {},
@@ -96,10 +98,9 @@ function createItemDataStructureFromGraphQL(data) {
         identifier: [data.identifier, data.permalink],
         images: imageFiles.map(image => image.path).sort(),
         itemId: itemId,
-        media: orderBy(
-            getMediaData([...mediaFiles, ...transcriptionFiles]),
-            "name"
-        ),
+        media: orderBy(media.media, "name"),
+        audio: orderBy(media.audio, "name"),
+        video: orderBy(media.video, "name"),
         openAccess: data.access_class === "open" ? true : false,
         rights: data.rights,
         thumbnails: sortBy(
@@ -126,13 +127,29 @@ function createItemDataStructureFromGraphQL(data) {
     }
 
     function getMediaData(files) {
-        files = groupBy(files, file => {
-            return file.name.split(".")[0];
+        let otherFiles = files.filter(f => {
+            return ![...types.videoTypes, ...types.audioTypes].includes(
+                f.name.split(".").pop()
+            );
         });
-        return map(files, (v, k) => {
+        otherFiles = groupBy(otherFiles, f => f.name.split(".")[0]);
+
+        let audioFiles = files.filter(f => {
+            return types.audioTypes.includes(f.name.split(".").pop());
+        });
+        audioFiles = audioFiles.map(file => {
+            if (otherFiles[file.name.split(".")[0]]) {
+                return [file, otherFiles[file.name.split(".")[0]]];
+            } else {
+                return file;
+            }
+        });
+        audioFiles = flattenDeep(audioFiles);
+        audioFiles = groupBy(audioFiles, file => file.name.split(".")[0]);
+        audioFiles = map(audioFiles, (v, k) => {
             return {
                 name: k,
-                files: filter([...v], "media"),
+                files: filter([...v], "audio"),
                 eaf: filter([...v], "eaf"),
                 // flextext: filter([...v], 'flextext'),
                 ixt: filter([...v], "ixt"),
@@ -141,23 +158,71 @@ function createItemDataStructureFromGraphQL(data) {
             };
         });
 
+        let videoFiles = files.filter(f => {
+            return types.videoTypes.includes(f.name.split(".").pop());
+        });
+        videoFiles = videoFiles.map(file => {
+            if (otherFiles[file.name.split(".")[0]]) {
+                return [file, otherFiles[file.name.split(".")[0]]];
+            } else {
+                return file;
+            }
+        });
+        videoFiles = flattenDeep(videoFiles);
+        videoFiles = groupBy(videoFiles, file => file.name.split(".")[0]);
+        videoFiles = map(videoFiles, (v, k) => {
+            return {
+                name: k,
+                files: filter([...v], "video"),
+                eaf: filter([...v], "eaf"),
+                // flextext: filter([...v], 'flextext'),
+                ixt: filter([...v], "ixt"),
+                trs: filter([...v], "trs"),
+                type: v[0].type.split("/")[0]
+            };
+        });
+        return {
+            media: [...audioFiles, ...videoFiles],
+            audio: audioFiles,
+            video: videoFiles
+        };
+        return [...audioFiles, ...videoFiles];
+        // files = groupBy(files, file => {
+        //     return file.name.split(".")[0];
+        // });
+        // return map(files, (v, k) => {
+        //     return {
+        //         name: k,
+        //         files: filter([...v], "media"),
+        //         eaf: filter([...v], "eaf"),
+        //         // flextext: filter([...v], 'flextext'),
+        //         ixt: filter([...v], "ixt"),
+        //         trs: filter([...v], "trs"),
+        //         type: v[0].type.split("/")[0]
+        //     };
+        // });
+
         function filter(files, what) {
-            if (what === "media") {
-                const set = [...types.videoTypes, ...types.audioTypes];
+            if (what === "audio" || what === "video") {
+                const set =
+                    what === "audio" ? types.audioTypes : types.videoTypes;
                 files = files.filter(file => {
-                    return includes(set, file.name.split(".")[1]);
+                    return set.includes(file.name.split(".").pop());
                 });
-                return files.map(file => file.path);
+                return uniqBy(files.map(file => file.path), "name");
             } else {
                 files = files.filter(file => {
-                    return file.name.split(".")[1] === what;
+                    return file.name.split(".").pop() === what;
                 });
-                return files.map(file => {
-                    return {
-                        name: file.name,
-                        url: file.path
-                    };
-                });
+                return uniqBy(
+                    files.map(file => {
+                        return {
+                            name: file.name,
+                            url: file.path
+                        };
+                    }),
+                    "name"
+                );
             }
         }
     }

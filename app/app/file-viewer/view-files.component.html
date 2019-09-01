@@ -31,13 +31,11 @@
         <div>
             Audio ({{vm.hasAudio.length}})
             <div>
-                <div ng-repeat="item in vm.item.media" track by $index>
-                    <span ng-if="item.type === 'audio'">
-                        <span class="">
-                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </span>
-                        <a ui-sref="main.media.instance({mediaId: item.name})">{{item.name}}</a>
+                <div ng-repeat="item in vm.item.audio" track by $index>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </span>
+                    <a ui-sref="main.audio.instance({audioId: item.name})">{{item.name}}</a>
                 </div>
             </div>
             <div ng-if="!vm.hasAudio.length">
@@ -48,13 +46,11 @@
         <div>
             Video ({{vm.hasVideo.length}})
             <div>
-                <div ng-repeat="item in vm.item.media" track by $index>
-                    <span ng-if="item.type === 'video'">
-                        <span class="">
-                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </span>
-                        <a ui-sref="main.media.instance({mediaId: item.name})">{{item.name}}</a>
+                <div ng-repeat="item in vm.item.video" track by $index>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </span>
+                    <a ui-sref="main.video.instance({videoId: item.name})">{{item.name}}</a>
                 </div>
             </div>
             <div ng-if="!vm.hasVideo.length">

@@ -61,8 +61,8 @@ function Controller(
                 vm.item.documents = vm.item.documents.map(i =>
                     i.split("/").pop()
                 );
-                vm.hasAudio = vm.item.media.filter(m => m.type === "audio");
-                vm.hasVideo = vm.item.media.filter(m => m.type === "video");
+                vm.hasAudio = vm.item.audio;
+                vm.hasVideo = vm.item.video;
             });
         }
     }
