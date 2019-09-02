@@ -51,11 +51,20 @@
                 <md-button
                     class="small-font"
                     ng-class="{'main-toolbar-selected': vm.state === 'media'}"
-                    ui-sref="main.media"
+                    ui-sref="main.audio"
                     blur-on-click
-                    ng-if="vm.itemData.media.length">
-                        <i class="fa fa-file-audio-o fa-lg"></i> Audio / Video
-                        <md-tooltip>View Audio / Video</md-tooltip>
+                    ng-if="vm.itemData.audio.length">
+                        <i class="fa fa-volume-up fa-lg"></i> Audio 
+                        <md-tooltip>View Audio </md-tooltip>
+                </md-button>
+                                <md-button
+                    class="small-font"
+                    ng-class="{'main-toolbar-selected': vm.state === 'media'}"
+                    ui-sref="main.video"
+                    blur-on-click
+                    ng-if="vm.itemData.video.length">
+                        <i class="fa fa-video-camera o fa-lg"></i> Video
+                        <md-tooltip>View Video</md-tooltip>
                 </md-button>
                 <md-button
                     class="small-font"
