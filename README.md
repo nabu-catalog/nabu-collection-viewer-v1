@@ -169,3 +169,4 @@ OR via a docker container:
 -   /#/NT10/W13 : .eaf XML
 -   /#/NT1/98007 : images, audio and eopas data file
 -   /#/NT5/TokelauOf : video and eopas data file
+-   /#/SocCog/HMK : itme objects with audio and video
