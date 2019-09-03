@@ -35,7 +35,7 @@ function Controller($state, $transitions, $window, dataService) {
 
     function viewSetup(stateName) {
         if (stateName === "root" && vm.mode === "online") {
-            $window.location.href = "http://catalog.paradisec.org.au";
+            $window.location.href = "https://catalog.paradisec.org.au";
         } else {
             dataService.libraryBoxLoader().then(response => {
                 vm.data = groupByIdentifier(response);

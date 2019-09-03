@@ -76,7 +76,7 @@ to NABU.
 Clone the repo @ https://github.com/marcolarosa/nginx-cors-plus and build the docker container then run it with:
 
 ```
-> docker run -it --rm -p 80:80 -e TARGET="http://catalog.paradisec.org.au" nginx-cors-proxy
+> docker run -it --rm -p 80:80 -e TARGET="https://catalog.paradisec.org.au" nginx-cors-proxy
 ```
 
 Then, edit your /etc/hosts file and add `catalog.paradisec.org.au` to the line starting with `127.0.0.1`. It should
