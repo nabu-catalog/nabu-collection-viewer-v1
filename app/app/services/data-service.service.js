@@ -156,7 +156,7 @@ function DataService(
             })
             .catch(error => {
                 if (error.message.match(/401/)) {
-                    $window.location.href = "https://catalog.paradisec.org.au";
+                    $window.location.href = window.location.origin;
                 }
             });
 

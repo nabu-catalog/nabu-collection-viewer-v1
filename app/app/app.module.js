@@ -58,7 +58,7 @@ function Configure($mdThemingProvider, $locationProvider, apolloProvider) {
 
     const client = new ApolloClient({
         link: new HttpLink({
-            uri: "https://catalog.paradisec.org.au/graphql",
+            uri: window.location.origin + "/graphql",
             credentials: "include"
         }),
         cache: new InMemoryCache()

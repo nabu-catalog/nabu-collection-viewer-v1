@@ -228,7 +228,7 @@ function createItemDataStructureFromGraphQL(data) {
     }
 
     function getFiles({ data, collectionId, itemId }) {
-        let path = `https://catalog.paradisec.org.au/repository/${collectionId}/${itemId}`;
+        let path = window.location.origin + `/repository/${collectionId}/${itemId}`;
         if (!isArray(data.files)) {
             data.files = [data.files];
         }

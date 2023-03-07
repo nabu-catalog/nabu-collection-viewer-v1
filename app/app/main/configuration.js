@@ -15,10 +15,10 @@ module.exports = {
     //  Once you have the code to process your datasource (noting that you MUST produce a datastructure as the
     //  paradisec example - see createItemDataStructure()), integrate it into scripts/controllers/main.js.
     datasource: {
-        collections: "https://catalog.paradisec.org.au/collections",
+        collections: window.location.origin + "/collections",
         itemIdentifier: "oai:paradisec.org.au:{{collectionId}}-{{itemId}}",
         getItem:
-            "https://catalog.paradisec.org.au/oai/item?verb=GetRecord&identifier={{itemId}}&metadataPrefix=olac",
+            window.location.origin + "/oai/item?verb=GetRecord&identifier={{itemId}}&metadataPrefix=olac",
         mode: process.env.MODE || "online"
     },
     header: {}
